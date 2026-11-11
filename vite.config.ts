@@ -69,11 +69,11 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'api-dont-pet-me-pwa-production-af6d0e9a.up.railway.app',
+        target: 'https://api-dont-pet-me-pwa-production-af6d0e9a.up.railway.app',
         changeOrigin: true,
       },
       '/imagenes': {
-        target: 'api-dont-pet-me-pwa-production-af6d0e9a.up.railway.app',
+        target: 'https://api-dont-pet-me-pwa-production-af6d0e9a.up.railway.app',
         changeOrigin: true,
       },
     },

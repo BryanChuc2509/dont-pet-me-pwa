@@ -1,5 +1,5 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? (
-  import.meta.env.DEV ? '' : 'api-dont-pet-me-pwa-production-af6d0e9a.up.railway.app'
+  import.meta.env.DEV ? '' : 'https://api-dont-pet-me-pwa-production-af6d0e9a.up.railway.app'
 )
 const API_CACHE_PREFIX = 'dont-pet-me:api:'
 
