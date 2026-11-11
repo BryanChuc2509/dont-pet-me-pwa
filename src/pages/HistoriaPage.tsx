@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import hamster from '../assets/hamster-jumping.svg'
-import huella from '../assets/huella.svg'
+// import huella from '../assets/huella.svg'
 import { StoryTimeline } from '../components/StoryTimeline'
 import { RouteMessage } from '../components/RouteMessage'
 import { getImageUrl, getStory } from '../api'
@@ -17,8 +17,8 @@ export function HistoriaPage() {
       <section className="story-intro" aria-labelledby="story-title">
         <div className="story-heading">
           <h1 id="story-title">
-            <span>Hist</span>
-            <img src={huella} alt="" aria-hidden="true" />
+            <span>Histo</span>
+            {/* <img src={huella} aria-hidden="true" /> */}
             <span>ria</span>
           </h1>
           <p>
