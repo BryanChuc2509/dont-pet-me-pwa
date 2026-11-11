@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #fcf1e5;
+  --color-brown: #44281c;
+  --font-grind: 'GC Grind', Impact, sans-serif;
+  --font-body: 'Avenir LT Std', Avenir, 'Trebuchet MS', sans-serif;
+  --font-counter: 'Chakra Petch', 'Courier New', monospace;
+}
+
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
