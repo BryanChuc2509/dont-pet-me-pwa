@@ -2,12 +2,21 @@ import huella from '../assets/huella.svg'
 import { useQuery } from '@tanstack/react-query'
 import { getImageUrl, getLevels } from '../api'
 import { RouteMessage } from '../components/RouteMessage'
+import { queryKeys } from '../queries'
 
 export function NivelesPage() {
-  const levelsQuery = useQuery({ queryKey: ['niveles'], queryFn: getLevels })
+  const levelsQuery = useQuery({ queryKey: queryKeys.levels, queryFn: getLevels })
 
   if (levelsQuery.isPending) return <RouteMessage title="Cargando niveles..." />
-  if (levelsQuery.isError) return <RouteMessage title="No se pudieron cargar los niveles" error />
+  if (levelsQuery.isError) {
+    return (
+      <RouteMessage
+        title="No se pudieron cargar los niveles"
+        error={levelsQuery.error}
+        onRetry={() => void levelsQuery.refetch()}
+      />
+    )
+  }
 
   return (
     <section
@@ -36,20 +45,21 @@ export function NivelesPage() {
 
       <div className="mx-auto grid max-w-[860px] grid-cols-1 gap-[27px] sm:grid-cols-2 sm:gap-[30px]">
         {levelsQuery.data.map((level) => (
-          <div
+          <article
             className="block min-w-0 rounded-sm transition-transform duration-200 ease-in-out hover:-translate-y-1"
             key={level.nombre}
-            aria-label={`Jugar nivel ${level.nombre}`}
           >
             <img
               className="h-[250px] w-full rounded-[9px] object-cover sm:h-[298px]"
               src={getImageUrl(level.imagen)}
-              alt=""
+              alt={`Nivel ${level.nombre}`}
+              loading="lazy"
+              decoding="async"
             />
             <h2 className="mt-3 text-[18px] font-bold uppercase leading-none sm:mt-[17px] sm:text-[29px]">
               {level.nombre}
             </h2>
-          </div>
+          </article>
         ))}
       </div>
     </section>

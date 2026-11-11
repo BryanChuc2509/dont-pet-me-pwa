@@ -1,7 +1,12 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? (
+import { readOfflineEntry, saveOfflineEntry } from './offlineStorage'
+
+const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL ?? (
   import.meta.env.DEV ? '' : 'https://api-dont-pet-me-pwa-production-af6d0e9a.up.railway.app'
 )
-const API_CACHE_PREFIX = 'dont-pet-me:api:'
+
+// Mismo nombre que la regla de imágenes del service worker (vite.config.ts),
+// así las imágenes precargadas aquí las sirve el SW sin conexión.
+export const IMAGE_CACHE_NAME = 'api-images'
 
 export type StoryChapter = {
   imagen: string
@@ -21,48 +26,40 @@ export type Level = {
   imagen: string
 }
 
+export class OfflineError extends Error {
+  constructor() {
+    super('Sin conexión y sin datos guardados')
+    this.name = 'OfflineError'
+  }
+}
+
 function resolveUrl(path: string) {
   return new URL(path, API_BASE_URL ? `${API_BASE_URL}/` : window.location.origin).toString()
 }
 
-function getCachedResponse<T>(url: string): T | undefined {
-  try {
-    const cached = localStorage.getItem(`${API_CACHE_PREFIX}${url}`)
-    if (!cached) return undefined
-
-    return JSON.parse(cached) as T
-  } catch (error) {
-    console.warn('No se pudo leer la respuesta guardada de la API', error)
-    return undefined
-  }
-}
-
-function cacheResponse<T>(url: string, data: T) {
-  try {
-    localStorage.setItem(`${API_CACHE_PREFIX}${url}`, JSON.stringify(data))
-  } catch (error) {
-    console.warn('No se pudo guardar la respuesta de la API', error)
-  }
-}
-
+/**
+ * Red primero; si falla (sin conexión, timeout o error del servidor) usa la
+ * última respuesta guardada en IndexedDB. El service worker también guarda
+ * las respuestas, pero esta copia funciona aunque el SW aún no controle la
+ * página (primera visita) o el navegador no lo soporte.
+ */
 async function get<T>(path: string): Promise<T> {
   const url = resolveUrl(path)
 
   try {
     const response = await fetch(url)
-
     if (!response.ok) {
       throw new Error(`La API respondió con ${response.status} al solicitar ${path}`)
     }
 
     const data = (await response.json()) as T
-    cacheResponse(url, data)
+    void saveOfflineEntry(url, data)
     return data
   } catch (error) {
-    const cachedResponse = getCachedResponse<T>(url)
-    if (cachedResponse !== undefined) return cachedResponse
+    const cached = await readOfflineEntry<T>(url)
+    if (cached !== undefined) return cached
 
-    throw error
+    throw navigator.onLine ? error : new OfflineError()
   }
 }
 
@@ -80,4 +77,16 @@ export function getCharacters() {
 
 export function getLevels() {
   return get<Level[]>('/api/niveles')
+}
+
+export function storyImages(story: StoryChapter[]) {
+  return story.map((chapter) => chapter.imagen)
+}
+
+export function characterImages(characters: Character[]) {
+  return characters.flatMap((character) => [character.imagen, ...character.imagenes])
+}
+
+export function levelImages(levels: Level[]) {
+  return levels.map((level) => level.imagen)
 }

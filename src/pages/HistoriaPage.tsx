@@ -5,12 +5,21 @@ import { StoryTimeline } from '../components/StoryTimeline'
 import { RouteMessage } from '../components/RouteMessage'
 import { getImageUrl, getStory } from '../api'
 import { useQuery } from '@tanstack/react-query'
+import { queryKeys } from '../queries'
 
 export function HistoriaPage() {
-  const storyQuery = useQuery({ queryKey: ['historia'], queryFn: getStory })
+  const storyQuery = useQuery({ queryKey: queryKeys.story, queryFn: getStory })
 
   if (storyQuery.isPending) return <RouteMessage title="Cargando historia..." />
-  if (storyQuery.isError) return <RouteMessage title="No se pudo cargar la historia" error />
+  if (storyQuery.isError) {
+    return (
+      <RouteMessage
+        title="No se pudo cargar la historia"
+        error={storyQuery.error}
+        onRetry={() => void storyQuery.refetch()}
+      />
+    )
+  }
 
   return (
     <section className="story-page" aria-label="Historia de Mochi">

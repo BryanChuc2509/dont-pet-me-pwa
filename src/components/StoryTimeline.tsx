@@ -14,7 +14,7 @@ export function StoryTimeline({ chapters, imageUrl }: StoryTimelineProps) {
             {index + 1}
           </span>
           <article className="story-card">
-              <img className="rounded-md"  src={imageUrl(chapter.imagen)} alt="" />
+            <img className="rounded-md" src={imageUrl(chapter.imagen)} alt="" loading="lazy" decoding="async" />
             <div className="story-card__content">
               <h2>{chapter.titulo}</h2>
               <p>{chapter.descripcion}</p>

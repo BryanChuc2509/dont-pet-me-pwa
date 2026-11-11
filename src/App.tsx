@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import { Countdown } from './components/Countdown'
 import { Gameplay } from './components/Gameplay'
 import { Header } from './components/Header'
+import { OfflineBanner } from './components/OfflineBanner'
 import { Hero } from './components/Hero'
 import { HistoriaPage } from './pages/HistoriaPage'
 import { PersonajesPage } from './pages/PersonajesPage'
@@ -16,6 +17,7 @@ function HomePage() {
 function App() {
   return (
     <main className="mx-auto min-h-screen max-w-7xl overflow-hidden bg-cream">
+      <OfflineBanner />
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />

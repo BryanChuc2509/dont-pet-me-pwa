@@ -18,6 +18,8 @@ export function CharacterCard({ character }: CharacterCardProps) {
               }`}
               src={character.image}
               alt={`Ilustración de ${character.name}`}
+              loading="lazy"
+              decoding="async"
             />
           ) : (
             <span
