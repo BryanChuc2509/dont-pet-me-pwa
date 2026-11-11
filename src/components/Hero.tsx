@@ -27,7 +27,7 @@ export function Hero() {
               className="inline-flex h-10 w-[170px] items-center justify-between rounded-full border border-brown px-1 pl-7 text-xs transition-colors hover:bg-brown hover:text-cream max-[1190px]:h-9 max-[1190px]:w-[176px] max-[1190px]:pl-7 max-[1190px]:text-[11px]"
               to={"/jugabilidad"}
             >
-              <span>Ver Gameplay</span>
+              <span>Ver Jugabilidad</span>
               <span className="grid size-8 place-items-center rounded-full bg-brown text-lg text-cream max-[1190px]:size-7 max-[1190px]:text-base" aria-hidden="true">↗</span>
             </Link>
           </div>

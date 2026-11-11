@@ -50,7 +50,7 @@ export function NivelesPage() {
             key={level.nombre}
           >
             <img
-              className="h-[250px] w-full rounded-[9px] object-cover sm:h-[298px]"
+              className=" w-full rounded-[9px] object-cover "
               src={getImageUrl(level.imagen)}
               alt={`Nivel ${level.nombre}`}
               loading="lazy"
